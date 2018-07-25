@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,9 @@ namespace AspNetCoreMediatR
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR();
+            services.AddCors();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -34,7 +38,13 @@ namespace AspNetCoreMediatR
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(option =>
+            {
+                option
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod();
+            });
             app.UseMvc();
         }
     }
